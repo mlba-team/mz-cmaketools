@@ -98,7 +98,8 @@ function get_compiler {
                 -DENABLE_ARC=0 \
                 -DENABLE_VISIBILITY=1 \
                 -DENABLE_BITCODE=1 \
-                -DIOS_DEPLOYMENT_TARGET=11.0"
+                -DIOS_DEPLOYMENT_TARGET=11.0 \
+                -DMZ_CONAN_PROFILE=${my_script_dir}/mz-ios_simulator.conan"
             # force, the others do not work right now
             my_c_generator="Unix Makefiles"
             ;;
@@ -112,7 +113,8 @@ function get_compiler {
                 -DENABLE_VISIBILITY=1 \
                 -DENABLE_BITCODE=1 \
                 -DIOS_DEPLOYMENT_TARGET=9.0 \
-                -DIOS_ARCH=armv7"
+                -DIOS_ARCH=armv7 \
+                -DMZ_CONAN_PROFILE=${my_script_dir}/mz-ios.conan"
             # force, the others do not work right now
             my_c_generator="Unix Makefiles"
             ;;
@@ -120,24 +122,26 @@ function get_compiler {
             my_cc=clang
             my_cxx=clang++
             my_args="${my_args} \
-                -DCMAKE_TOOLCHAIN_FILE=${my_script_dir}/iOS.cmake \
-                -DIOS_PLATFORM=OS64 \
-                -DENABLE_ARC=0 \
-                -DENABLE_VISIBILITY=1 \
-                -DENABLE_BITCODE=1 \
-                -DIOS_DEPLOYMENT_TARGET=11.0 \
-                -DIOS_ARCH=arm64"
+                -DCMAKE_SYSTEM_NAME=iOS \
+                -DCMAKE_OSX_ARCHITECTURES=arm64 \
+                -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
+                -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO \
+                -DMZ_CONAN_PROFILE=${my_script_dir}/mz-ios.conan"
             # force, the others do not work right now
-            my_c_generator="Unix Makefiles"
+            #my_c_generator="Unix Makefiles"
             ;;
         clang)
             my_cc=clang
             my_cxx=clang++
+            my_args="${my_args} \
+                -DMZ_CONAN_PROFILE=${my_script_dir}/mz-default.conan"
             ;;
         *)
             my_cc=gcc
             my_cxx=g++
             my_compiler=gcc
+            my_args="${my_args} \
+                -DMZ_CONAN_PROFILE=${my_script_dir}/mz-default.conan"
             ;;
     esac
 }
